@@ -2,7 +2,6 @@ from bn256 import *
 from random import randrange
 from collections import namedtuple
 import ac_utils as utils
-import time
 from functools import reduce
 
 class Issuer:
@@ -22,7 +21,7 @@ class Issuer:
         t1 = gpow (g2gen, r)
         t2 = gpow (g1bar, r)
         
-        C = utils.HashList(utils.FormList([t1,t2,g2gen,g1bar,w,g2bar]))
+        C = utils.hashList(utils.formList([t1,t2,g2gen,g1bar,w,g2bar]))
         S = (r + C * x) % order
         HAttrs = [g1_random() for i in range(len(AttributeNames))] 
         HRand, HSk = g1_random(), g1_random() 
@@ -46,7 +45,7 @@ class Issuer:
         return self.ipk
     
     def getNonce ():
-        return utils.GetNonce()
+        return utils.getNonce()
     
     #Issuer verifies the credential request by verifying the zero-knowledge proof   
     def verifyPoK (self, CredRequest):
@@ -61,9 +60,9 @@ class Issuer:
                 }
         """
         t1bar = pointadd(gpow(self.ipk.pHSk, CredRequest.S) , gpow(pointneg(CredRequest.Nym),CredRequest.C) )
-        listC = utils.FormList([t1bar, self.ipk.pHSk, CredRequest.Nym])
+        listC = utils.formList([t1bar, self.ipk.pHSk, CredRequest.Nym])
         listC.append(CredRequest.IssuerNonce)
-        Cbar = utils.HashList(listC)
+        Cbar = utils.hashList(listC)
        
         if CredRequest.C==Cbar: return True
         else: return False

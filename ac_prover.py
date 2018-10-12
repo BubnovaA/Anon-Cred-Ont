@@ -18,9 +18,9 @@ class Prover:
         Nym = gpow(self.ipk.pHSk, sk)
         r = randrange(2, order)
         t1 = gpow (self.ipk.pHSk, r)
-        listC = utils.FormList([t1,self.ipk.pHSk,Nym])
+        listC = utils.formList([t1,self.ipk.pHSk,Nym])
         listC.append(IssuerNonce)
-        C = utils.HashList(listC)
+        C = utils.hashList(listC)
         S = (r + C * sk) % order
                   
         self.CredRequest = utils.CredRequest(Nym, IssuerNonce, iAttributeValues, C, S)    
@@ -33,7 +33,7 @@ class Prover:
             return False
         sumattr =reduce(pointadd,  list(map(lambda x,y: gpow(x,y), self.ipk.HAttrs, self.CredRequest.Attrs)))
         Bprime = reduce(pointadd,[g1gen, gpow(self.ipk.pHRand, Credential.s),self.CredRequest.Nym, sumattr])
-        if utils.HashList(utils.FormList([Credential.B])) != utils.HashList(utils.FormList([Bprime])) :
+        if utils.hashList(utils.formList([Credential.B])) != utils.hashList(utils.formList([Bprime])) :
             return False
         else: return True
         
@@ -92,11 +92,11 @@ class Prover:
             listCp = [APrime, ABar, BPrime, self.CredRequest.Nym, t1, t2, g1gen, self.ipk.pHRand]
             listCp += self.ipk.HAttrs
             listCp.append(self.ipk.pw)
-            Nonce = utils.GetNonce()
+            Nonce = utils.getNonce()
             listC = [ Nonce ]
-            listC += utils.FormList(listCp)
+            listC += utils.formList(listCp)
             listC += [item for sublist in self.DI for item in sublist]
-            c = utils.HashList(listC) 
+            c = utils.hashList(listC) 
             
             s_sk = (r_sk + c*self._mastersecret) % order
             sai = list(map(lambda x,y: (x - c*y) % order, rai, sai))

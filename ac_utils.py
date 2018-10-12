@@ -1,7 +1,7 @@
 from bn256 import *
 from collections import namedtuple
 from hashlib import sha256
-import time
+import uuid
 
 IssuerPublicKey = namedtuple('ipk', [
     'AttributeNames',
@@ -43,20 +43,20 @@ Proof = namedtuple('Proof', [
     'Nym'])
 
 
-
-def GetNonce():
-    return int(time.time() * 1000)
+def getNonce():
+    nonce = uuid.uuid4()
+    return nonce.int
 
 def encodeAttrs(Attrs):
     return int(sha256(str(Attrs).encode()).hexdigest(),16) % order
 
-def HashStr(string):
+def hashStr(string):
     return int(sha256(string.encode()).hexdigest(),16) % order
 
-def FormList(listG):
+def formList(listG):
     return [item for sublist in list(map(g_marshall, listG)) for item in sublist]
     
-def HashList(listC):
+def hashList(listC):
     string = (''.join(list(map('{0:b}'.format,listC))))
     h = sha256(string.encode())
     return int(h.hexdigest(),16)

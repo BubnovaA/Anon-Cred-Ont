@@ -34,9 +34,9 @@ class Verifier:
         listH += PublicKey.HAttrs
         listH.append(PublicKey.pw)
         listC = [Proof.ProofNonce]
-        listC += utils.FormList (listH)
+        listC += utils.formList (listH)
         listC += [item for sublist in AttributePredicate for item in sublist]
-        CPrime = utils.HashList(listC)
+        CPrime = utils.hashList(listC)
 
         if Proof.ProofC == CPrime :
             return True
@@ -58,7 +58,7 @@ class Verifier:
         """
         t1bar = pointadd(gpow(g2gen, ipk.S), pointneg(gpow(ipk.pw, ipk.C)))
         t2bar = pointadd(gpow(ipk.p_g1, ipk.S) , gpow(pointneg(ipk.p_g2),ipk.C))
-        Cbar = utils.HashList(utils.FormList([t1bar, t2bar, g2gen, ipk.p_g1, ipk.pw, ipk.p_g2]))
+        Cbar = utils.hashList(utils.formList([t1bar, t2bar, g2gen, ipk.p_g1, ipk.pw, ipk.p_g2]))
         if ipk.C==Cbar: return True
         else: return False
         

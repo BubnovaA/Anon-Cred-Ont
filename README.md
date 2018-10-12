@@ -188,8 +188,7 @@ def testprotokol():
     Request = prover.genCredRequest(ipk, issuer.getNonce())
     print('REQUEST : ')
     print (Request)
-
-    Credential = issuer.genCredential(issuer, Request)
+	Credential = issuer.genCredential(issuer, Request)
     if Credential:
         if prover.setCredential (Credential):
             print('CREDENTIAL issued to the user:')
@@ -197,15 +196,12 @@ def testprotokol():
         else: print ('Error sig')    
     else:
         print('Error gen credential')
-
-    Predicate = (0,1,0)
-    print('Predicat for ', ipk.AttributeNames, ' : ', Predicate)
-
-    DI, Proof = prover.genProof(Predicate)   
-    print('PROOF: ', Proof )
-    print('DI', DI)
-
-    verifier = ac_verifier.Verifier
-    print('VERIFY Proof = ', verifier.verifyProof(DI, Proof, ipk))
+	Predicate = (0,1,0)
+	print('Predicat for ', ipk.AttributeNames, ' : ', Predicate)
+	DI, Proof = prover.genProof(Predicate)   
+	print('PROOF: ', Proof )
+	print('DI', DI)
+	verifier = ac_verifier.Verifier
+	print('VERIFY Proof = ', verifier.verifyProof(DI, Proof, ipk))
 </code></pre>
 

@@ -1,8 +1,3 @@
----
-
-
----
-
 <h1 id="anonymous-credential">Anonymous Credential</h1>
 <p>This repository contains a Python library for implementing anonymous credential scheme.</p>
 <h2 id="introduction">Introduction</h2>
@@ -18,27 +13,27 @@ Issuer’s public key:</p>
     'AttributeNames',	#array of string
     'HAttrs',			#one G1-element for one attribute
     'pHRand',			#a random G1 point
-    'pHSk',				#a random G1 point to encode user's secret key 
-    'pw',				#element from G2  
-    'p_g1',				#point of G1
-    'p_g2',				#point of G1
-    'C',				#integer   (challenge)
-    'S'])				#integer   (response)
-</code></pre>
-<p>Credential request:</p>
-<pre><code>CredRequest = namedtuple('CredRequest', [
-    'Nym',			#G1 point (commitment to user's master secret)
-    'IssuerNonce',	#integer  (nonce)
-    'Attrs',		#array of integer  (encoded attributes)
+    'pHSk',			#a random G1 point to encode user's secret key 
+    'pw',			#element from G2  
+    'p_g1',			#point of G1
+    'p_g2',			#point of G1
     'C',			#integer   (challenge)
     'S'])			#integer   (response)
 </code></pre>
+<p>Credential request:</p>
+<pre><code>CredRequest = namedtuple('CredRequest', [
+    'Nym',		#G1 point (commitment to user's master secret)
+    'IssuerNonce',	#integer  (nonce)
+    'Attrs',		#array of integer  (encoded attributes)
+    'C',		#integer   (challenge)
+    'S'])		#integer   (response)
+</code></pre>
 <p>Credential :</p>
 <pre><code>Credential = namedtuple('Credential', [
-    'A',			#point of G1
-    'B',			#point of G1
-    'e',			#integer
-    's',			#integer
+    'A',		#point of G1
+    'B',		#point of G1
+    'e',		#integer
+    's',		#integer
     'Attrs'])		#array of integer
 </code></pre>
 <p><strong>Utility function:</strong></p>
@@ -173,10 +168,10 @@ The Prover class is initialized with a set of attributes values.<br>
 </tbody>
 </table><h2 id="usage">Usage</h2>
 <p>For instance:</p>
-<pre><code>import ac_issuer
+<pre><code>
+import ac_issuer
 import ac_prover
 import ac_verifier
-
 def testprotokol():
     print('Test protocol')
     issuer = ac_issuer.Issuer

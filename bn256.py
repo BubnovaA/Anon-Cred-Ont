@@ -24,7 +24,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 Bilinear environment
 (order,G1,G2,GT,g1gen,g2gen,pair),
-where order, G1, G2, GT, and pair are deﬁned as above,
+where order, G1, G2, GT, and pair are defined as above,
 and where g1gen (resp. g2gen) is a generator of G1 (resp. G2).
 """
 
@@ -36,7 +36,7 @@ The prime p is given by the BN polynomial parametrization
 p = 36u^4+ 36u^3+ 24u^2+ 6u+ 1, where u = v^3 and v = 1868033.
 The curve equation is E : y^2 = x^3 + 3.
 Points are kept in Jacobian form. G1 is the set of points of this curve on GF(p)
-The point at inﬁnity is 0E =(1,1,0). The opposite of the point P =(XP,YP,ZP) is −P =(XP,−YP,ZP). 
+The point at infinity is 0E =(1,1,0). The opposite of the point P =(XP,YP,ZP) is -P =(XP,-YP,ZP). 
 """
 
 import hashlib
@@ -53,13 +53,12 @@ global p, order
 p = 65000549695646603732796438742359905742825358107623003571877145026864184071783
 order = 65000549695646603732796438742359905742570406053903786389881062969044166799969
 
-
-
 def sqrt_mod_p(a):
     assert p % 4 == 3
     return pow(a, (p+1)//4, p)
 
-# Fermat’s little theorem. Let p be a prime number and x ∈Fp, then x^p−2 = x^−1.
+
+# Fermat's little theorem. Let p be a prime number and x \in Fp, then x^p - 2 = x^(-1).
 def inv_mod_p(a):
     return pow(a, p-2, p)
 
@@ -300,15 +299,15 @@ def point_force_affine(point):
 
 
 """
-R0 ← 0
-  R1 ← P
+R0 <- 0
+  R1 <- P
   for i from m downto 0 do
      if di = 0 then
-        R1 ← point_add(R0, R1)
-        R0 ← point_double(R0)
+        R1 <- point_add(R0, R1)
+        R0 <- point_double(R0)
      else
-        R0 ← point_add(R0, R1)
-        R1 ← point_double(R1)
+        R0 <- point_add(R0, R1)
+        R1 <- point_double(R1)
   return R0
 """
 def point_scalar_mul(pt, k):

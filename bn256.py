@@ -174,6 +174,16 @@ class gfp_1(object):
         p_bytes = (p.bit_length() // 8) + (1 if (p.bit_length() % 8) > 0 else 0)
         return self.value().to_bytes(p_bytes, 'big')
 
+def is_py3():
+    return (sys.version_info[0] == 3)
+
+def is_integer_type(x):
+    if is_py3():
+        return isinstance(x, int)
+    else:
+        return isinstance(x, (int, long))
+
+
 def point_on_curve(point, b):
     point.force_affine()
     yy = point.y.square()
@@ -312,7 +322,7 @@ R0 ← 0
   return R0
 """
 def point_scalar_mul(pt, k):
-    if not isinstance(k, int):
+    if not is_integer_type(k):
          raise Exception("Can't scale a point by something which isn't an int!")
    
 
@@ -473,7 +483,7 @@ class gfp_2(object):
         return gfp_2(c_x, c_y)
 
     def exp(p, k):
-        if not isinstance(k, int):
+        if not is_integer_type(k):
             raise Exception("Error integer type")
         if not isinstance(p, gfp_2):
             raise Exception("Error gfp_2 type") 
@@ -791,7 +801,7 @@ class gfp_12(object):
         return gfp_12(self.x.mul(k), self.y.mul(k))
 
     def exp(self, k):
-        if not isinstance(k, int):
+        if not is_integer_type(k):
             raise Exception('Error integer type')    
 
         R = [gfp_12(gfp_6_zero, gfp_6_one), self]

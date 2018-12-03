@@ -13,10 +13,10 @@ class Verifier:
         #check if e(A', w) == e(_A, g2); if false, return false. This is zk-PoK for A
         if (pair(Proof.APrime,PublicKey.pw))!=(pair(Proof.ABar,g2gen)):
             return False
-        #~t1 = A'^s_e · HRand^s_r2 · (_A/B')^(-c) . This is zk-PoK for e, r2.
+        # ~t1 = A'^s_e  HRand^s_r2  (_A/B')^(-c) . This is zk-PoK for e, r2.
         t1tilde = reduce (pointadd, [gpow (Proof.APrime, Proof.ProofSE), gpow(PublicKey.pHRand, Proof.ProofSR2) , gpow (pointneg(Proof.ABar), Proof.ProofC), gpow (Proof.BPrime, Proof.ProofC)])
         """
-        ~t2 : (B')^s_r3 · HRand^s_s' · HSk^(-s_sk) · MulAll(hi^(-s_ai)) · (g1·MulAll(hi^ai))^(-c)
+        ~t2 : (B')^s_r3  HRand^s_s'  HSk^(-s_sk)  MulAll(hi^(-s_ai))  (g1 MulAll(hi^ai))^(-c)
         the i above, first MulAll( ) belongs to _D, where D[i]==0(false)
         the i above, second MulAll( ) belongs to D, where D[i]==1(true)
         This is ZKPoK for r3, s', gsk, ai of _D
@@ -45,7 +45,7 @@ class Verifier:
 
     def verifyIssuerPoK(ipk):
         """
-        π = PoK{x: w = g2^x && _g2 = _g1^x} = (C, S)
+        pi = PoK{x: w = g2^x && _g2 = _g1^x} = (C, S)
         _t1 = g2^S * w^(-c)
         _t2 = _g1^S * _g2^(-c)
         _P = _t1 || _t2 || g2 || _g1 || w || _g2

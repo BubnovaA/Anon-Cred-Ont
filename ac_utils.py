@@ -67,9 +67,9 @@ def hashList(listC):
     h = sha256(string.encode())
     return int(h.hexdigest(),16)
 
-#Fermat’s little theorem.
-#Let p be a prime number and x ∈Fp, then x^p−2 = x^−1.
 #return modular multiplicative inverse of an integer x
+# Fermat's little theorem.
+# Let p be a prime number and x \in Fp, then x^p-2 = x^-1.
 def inverse_mod(x, modp):
     return pow(x, modp-2, modp)
 

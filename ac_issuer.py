@@ -31,7 +31,7 @@ class Issuer:
         
         """
         The protocol we give is a standard sigma protocol. It consists three steps, namely, commit, challenge, response
-        P = t1 || t2 || g2 || _g1 || w || _g2    //join them together in binary format
+        P = t1 || t2 || g2 ||_g1 || w ||_g2    //join them together in binary format
         C = hash_to_int(P)                       //C is challenge
         """
         C = utils.hashList(utils.formList([t1,t2,g2gen,g1bar,w,g2bar]))
@@ -97,8 +97,10 @@ class Issuer:
     def genCredential (self, CredRequest) :
         if self.verifyPoK (self, CredRequest):
             """
-            Sample two random elements e, s from Zp.
+            Sample two random elements e, s from Zp
             Compute B = g1 * HRand^s * Nym * MulAll(HAttrs[i]^(Attrs[i]))
+            Compute A = B^(1/(e+x))
+            Compute B = g1  HRand^s  Nym  MulAll(HAttrs[i]^(Attrs[i]))
             Compute A = B^(1/(e+x))
             Return credential (A, B, e, s, Attrs)
             """

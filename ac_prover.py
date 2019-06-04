@@ -9,18 +9,22 @@ class Prover:
         self._AttrValue = AttrValue
       
     #User creates a Credential Request using the public key of the issuer, user secret, and the nonce as input
-    #The request consists of a commitment to the user secret (can be seen as a public key) and a zero-knowledge proof of knowledge of the user secret key    
+    #The request consists of a commitment to the user secret (can be seen as a public key) and a zero-knowledge proof of knowledge of the user secret key
+    #https://github.com/ontio/ontology-crypto/wiki/Anonymous-Credential#31-generate-credential-request
     def genCredRequest( self, IssuerPublicKey, IssuerNonce):
         iAttributeValues = list(map(utils.encodeAttrs,self._AttrValue))
                 
         self.ipk = IssuerPublicKey 
-        sk = randrange(2, order)
-        Nym = gpow(self.ipk.pHSk, sk)
-        r = randrange(2, order)
-        t1 = gpow (self.ipk.pHSk, r)
+        sk = randrange(2, order) #Sample a random element sk from Zp as user's master secret.
+        Nym = gpow(self.ipk.pHSk, sk) #Compute Nym = HSk^(sk) as a commitment to user's master secret.
+        r = randrange(2, order) #Sample a random element r from Zp.
+        t1 = gpow (self.ipk.pHSk, r)    #Compute t1 = HSk^r.
+
+        #Compute challenge C = H(t1 || HSk || Nym || nonce).
         listC = utils.formList([t1,self.ipk.pHSk,Nym])
         listC.append(IssuerNonce)
         C = utils.hashList(listC)
+        #Compute response S = (r + C * sk) mod order.
         S = (r + C * sk) % order
                   
         self.CredRequest = utils.CredRequest(Nym, IssuerNonce, iAttributeValues, C, S)    
@@ -28,6 +32,7 @@ class Prover:
         return self.CredRequest
 
     #The user verifies the issuer's signature and stores the credential
+    #Returns a boolean indicating whether a signature is valid for the given Credential
     def verifySig(self, Credential):
         if pair(Credential.A, pointadd(gpow(g2gen, Credential.e), self.ipk.pw))!=pair(Credential.B,g2gen):
             return False
@@ -36,7 +41,8 @@ class Prover:
         if utils.hashList(utils.formList([Credential.B])) != utils.hashList(utils.formList([Bprime])) :
             return False
         else: return True
-        
+
+    #It internally sets credentials (obtained from an issuer)    
     def setCredential (self, Credential):
         if self.verifySig(Credential):
             self.Credential = Credential
@@ -44,6 +50,10 @@ class Prover:
         else: return False
 
     #Predicate example: [0,1,0,1,1] 0 - attribute not disclosed (hidden), 1 - attribute disclosed (reveal)
+
+    #For the input predicate (example [0,1,0,1,1] 0 - attribute not disclosed (hidden), 1 - attribute disclosed (reveal)) ,
+    #return (D, I): attribute predicate, describe what attributes will be disclosed.
+    #If D[j]==1, I[j]=attrs[j]=aj, else I[j]=null    
     def setAttributePredicate (self, Predicate):
         if (len(Predicate))!=(len(self._AttrValue)):
             print ('Predicate length does not match number of attributes')
@@ -58,6 +68,9 @@ class Prover:
     
     #The prover is in possession of an anonymous credential,
     #and he can selectively disclose some attributes while hiding the other attributes.
+    #
+    #Generate the selectively disclosure proof (zero knowledge proof)
+    #https://github.com/ontio/ontology-crypto/wiki/Anonymous-Credential#41-proving-algorithm
     def genProof (self, Predicate):
         self.DI = self.setAttributePredicate(Predicate)
         if self.DI :

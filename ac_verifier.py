@@ -5,7 +5,8 @@ import time
 from functools import reduce
 
 class Verifier:
-    
+
+    #Returns a boolean indicating whether a signature and Proof of Knowledge (PoK) is valid for the given AttributePredicate, Proof, PublicKey
     def verifyProof (AttributePredicate, Proof, PublicKey):
         #check A'!=1 in G1
         if Proof.APrime.is_infinity() :
@@ -42,7 +43,7 @@ class Verifier:
             return True
         else : return False
 
-
+    #Returns a boolean indicating whether a Proof of Knowledge (PoK) is valid for the given public key
     def verifyIssuerPoK(ipk):
         """
         π = PoK{x: w = g2^x && _g2 = _g1^x} = (C, S)

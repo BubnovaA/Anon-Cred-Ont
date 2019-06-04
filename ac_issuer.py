@@ -98,8 +98,8 @@ class Issuer:
         if self.verifyPoK (self, CredRequest):
             """
             Sample two random elements e, s from Zp.
-            Compute B = g1 · HRand^s · Nym · MulAll(HAttrs[i]^(Attrs[i]))
-            Compute A = B^(1/(e+x)).
+            Compute B = g1 * HRand^s * Nym * MulAll(HAttrs[i]^(Attrs[i]))
+            Compute A = B^(1/(e+x))
             Return credential (A, B, e, s, Attrs)
             """
             e, s = randrange(2, order) , randrange(2, order)
